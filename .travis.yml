@@ -41,5 +41,5 @@ if: branch = master
 script:
 - mkdir build-travis
 - cd build-travis
-- cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCLSOCKET_EXAMPLES:BOOL=ON
+- cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX
 - make -j3
