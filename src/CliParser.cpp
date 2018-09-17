@@ -25,6 +25,7 @@ SOFTWARE.
 */
 
 #include "CliParser.h"
+#include <algorithm>
 //#include <execution>
 
 CommandLineParser::CommandLineParser( int argc, char** argv )
@@ -45,7 +46,7 @@ bool CommandLineParser::DoesSwitchExists( const std::string& name )
 {
    if( name.empty() ) return false;
 
-   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.begin(), m_vecArgs.end(), [ &name = name ]( const std::string& arg )->bool
+   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.begin(), m_vecArgs.end(), [ name ]( const std::string& arg )->bool
                         {
                            return ( arg.front() == '/' || arg.front() == '-' ) && ( arg.find( name ) != std::string::npos );
                         } ) != std::end( m_vecArgs );
