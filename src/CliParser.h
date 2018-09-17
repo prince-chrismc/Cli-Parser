@@ -50,6 +50,9 @@ public:
    bool        DoesSwitchExists( const std::string& name );
    std::string GetPairValue( std::string name );
    std::string GetNonInterpted( size_t index ); // Ignores switches and pairs
+   
+   auto begin() { return m_vecArgs.being(); }
+   auto end() { return m_vecArgs.end(); }
 
 private:
    void Parse( int argc, char** argv );
