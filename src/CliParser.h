@@ -51,7 +51,7 @@ public:
    std::string GetPairValue( std::string name );
    std::string GetNonInterpted( size_t index ); // Ignores switches and pairs
    
-   auto begin() { return m_vecArgs.being(); }
+   auto begin() { return m_vecArgs.begin(); }
    auto end() { return m_vecArgs.end(); }
 
 private:
