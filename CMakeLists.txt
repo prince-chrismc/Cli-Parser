@@ -64,7 +64,7 @@ endif()
 OPTION(CLI_PARSER_DEP_ONLY "Build for use inside other CMake projects as dependency." OFF)
 
 # make the lib
-if(SIMPLE_SOCKET_DEP_ONLY)
+if(CLI_PARSER_DEP_ONLY)
     ADD_LIBRARY(Cli-Parser STATIC EXCLUDE_FROM_ALL ${CLI_PARSER_SOURCES} ${DATA_FILE})
 else()
     ADD_LIBRARY(Cli-Parser STATIC ${CLI_PARSER_SOURCES} ${DATA_FILE})
@@ -73,7 +73,7 @@ endif()
 TARGET_LINK_LIBRARIES(Cli-Parser ${PROJECT_LIBS})
 
 # install into configured prefix
-if(NOT SIMPLE_SOCKET_DEP_ONLY)
+if(NOT CLI_PARSER_DEP_ONLY)
     install(TARGETS Cli-Parser ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
     install(FILES ${CLI_PARSER_HEADERS} DESTINATION include)
 endif()
