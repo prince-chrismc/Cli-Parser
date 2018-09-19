@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(simple-socket)
+project(Cli-Parser)
 
 # set up versioning.
 set(BUILD_MAJOR "0")
@@ -31,14 +31,16 @@ if(UNIX)
     # linux / normal unix
     add_definitions(-D_LINUX)
     set(CMAKE_CXX_STANDARD 17)
-    IF(CMAKE_BUILD_TYPE MATCHES Debug)
-      message("Building 'Debug' configuration.")
-    ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
-      message("Building 'Release' configuration.")
-    ELSE()
-      set(CMAKE_BUILD_TYPE Release)
-      message("Defaulting to 'Release' configuration.")
-    ENDIF()
+    if(SIMPLE_SOCKET_DEP_ONLY)
+       if(CMAKE_BUILD_TYPE MATCHES Debug)
+         message("Building 'Debug' configuration.")
+       elseif(CMAKE_BUILD_TYPE MATCHES Release)
+         message("Building 'Release' configuration.")
+       else()
+         set(CMAKE_BUILD_TYPE Release)
+         message("Defaulting to 'Release' configuration.")
+       endif()
+    endif()
     if(CYGWIN)
         # Special Cygwin stuff here
     elseif(APPLE)
@@ -63,18 +65,18 @@ OPTION(CLI_PARSER_DEP_ONLY "Build for use inside other CMake projects as depende
 
 # make the lib
 if(SIMPLE_SOCKET_DEP_ONLY)
-    ADD_LIBRARY(cli-parser STATIC EXCLUDE_FROM_ALL ${CLI_PARSER_SOURCES} ${DATA_FILE})
+    ADD_LIBRARY(Cli-Parser STATIC EXCLUDE_FROM_ALL ${CLI_PARSER_SOURCES} ${DATA_FILE})
 else()
-    ADD_LIBRARY(cli-parser STATIC ${CLI_PARSER_SOURCES} ${DATA_FILE})
+    ADD_LIBRARY(Cli-Parser STATIC ${CLI_PARSER_SOURCES} ${DATA_FILE})
 endif()
 
-TARGET_LINK_LIBRARIES(cli-parser ${PROJECT_LIBS})
+TARGET_LINK_LIBRARIES(Cli-Parser ${PROJECT_LIBS})
 
 # install into configured prefix
 if(NOT SIMPLE_SOCKET_DEP_ONLY)
-    install(TARGETS cli-parser ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
+    install(TARGETS Cli-Parser ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
     install(FILES ${CLI_PARSER_HEADERS} DESTINATION include)
 endif()
 
-set_target_properties(cli-parser PROPERTIES VERSION ${BUILD_VERSION} SOVERSION ${BUILD_MAJOR})
+set_target_properties(Cli-Parser PROPERTIES VERSION ${BUILD_VERSION} SOVERSION ${BUILD_MAJOR})
 
