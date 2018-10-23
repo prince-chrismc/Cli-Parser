@@ -26,6 +26,7 @@ SOFTWARE.
 
 #include "CliParser.h"
 #include <algorithm>
+#include <type_traits>
 //#include <execution>
 
 template <typename ... Args>
