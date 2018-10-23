@@ -38,8 +38,14 @@ void CommandLineParser::Parse( int argc, char** argv )
    m_sCommand = argv[ 0 ]; // Save filename
    for( int i = 1; i < argc; i++ ) // Then save each arg
    {
-      m_vecArgs.emplace_back( argv[ i ] );
+      operator<<( argv[ i ] );
    }
+}
+
+CommandLineParser& CommandLineParser::operator<<(const std::string& arg)
+{
+   m_vecArgs.push_back( arg );
+   return *this;
 }
 
 bool CommandLineParser::DoesSwitchExists( const std::string& name ) const noexcept
