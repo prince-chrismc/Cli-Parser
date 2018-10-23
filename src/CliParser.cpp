@@ -94,6 +94,6 @@ CommandLineParser::ArgIterator CommandLineParser::find( const std::string& name 
 {
    return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
                         {
-                           return arg.compare( ( arg.front() == '/' || arg.front() == '-' ) ? 1 : 0, name.length(), name ) == 0;
+                           return arg.compare( 0, name.length(), name ) == 0;
                         } );
 }
