@@ -42,23 +42,23 @@ void CommandLineParser::Parse( int argc, char** argv )
    }
 }
 
-bool CommandLineParser::DoesSwitchExists( const std::string& name )
+bool CommandLineParser::DoesSwitchExists( const std::string& name ) const noexcept
 {
    if( name.empty() ) return false;
 
-   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.begin(), m_vecArgs.end(), [ name ]( const std::string& arg )->bool
+   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
                         {
                            return ( arg.front() == '/' || arg.front() == '-' ) && ( arg.find( name ) != std::string::npos );
                         } ) != std::end( m_vecArgs );
 }
 
-std::string CommandLineParser::GetPairValue( std::string name )
+std::string CommandLineParser::GetPairValue( std::string name ) const noexcept
 {
    if( name.empty() ) return "";
 
    name += "=";
    std::string retval;
-   for( auto& pair : m_vecArgs )
+   for( const auto& pair : m_vecArgs )
    {
       const size_t switch_index = pair.find( name );
       if( switch_index != std::string::npos )
@@ -71,18 +71,26 @@ std::string CommandLineParser::GetPairValue( std::string name )
    return retval;
 }
 
-std::string CommandLineParser::GetNonInterpted( size_t index )
+std::string CommandLineParser::GetNonInterpted( size_t index ) const noexcept
 {
    if( m_vecArgs.size() > index ) return "";
 
    size_t nCounter = 0;
    std::string retval;
 
-   for( auto& arg : m_vecArgs )
+   for( const auto& arg : m_vecArgs )
    {
       if( arg.front() == '/' || arg.front() == '-' ) continue;
       if( ++nCounter == index ) retval = arg;
    }
 
    return retval;
+}
+
+CommandLineParser::ArgIterator CommandLineParser::find( const std::string& name ) const noexcept
+{
+   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
+                        {
+                           return arg.compare( ( arg.front() == '/' || arg.front() == '-' ) ? 1 : 0, name.length(), name ) == 0;
+                        } );
 }

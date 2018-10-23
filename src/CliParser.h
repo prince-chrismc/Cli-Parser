@@ -45,15 +45,15 @@ class CommandLineParser
 {
 public:
    CommandLineParser( int argc, char** argv );
-   ~CommandLineParser() = default;
 
-   bool        DoesSwitchExists( const std::string& name );
-   std::string GetPairValue( std::string name );
-   std::string GetNonInterpted( size_t index ); // Ignores switches and pairs
+   bool        DoesSwitchExists( const std::string& name ) const noexcept;
+   std::string GetPairValue( std::string name ) const noexcept;
+   std::string GetNonInterpted( size_t index ) const noexcept; // Ignores switches and pairs
 
-   typedef std::vector<std::string>::const_iterator ArgIterator;
-   auto cbegin() { return m_vecArgs.cbegin(); }
-   auto cend() { return m_vecArgs.cend(); }
+   using ArgIterator = std::vector<std::string>::const_iterator;
+   ArgIterator cbegin() const noexcept { return m_vecArgs.cbegin(); }
+   ArgIterator cend() const noexcept { return m_vecArgs.cend(); }
+   ArgIterator find( const std::string& name ) const noexcept;
 
 private:
    void Parse( int argc, char** argv );
