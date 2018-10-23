@@ -44,6 +44,8 @@ SOFTWARE.
 class CommandLineParser
 {
 public:
+   template<typename ...Args>
+   CommandLineParser( Args&&... args );
    CommandLineParser( int argc, char** argv );
 
    bool        DoesSwitchExists( const std::string& name ) const noexcept;
@@ -56,7 +58,6 @@ public:
    ArgIterator find( const std::string& name ) const noexcept;
 
 private:
-   void Parse( int argc, char** argv );
    CommandLineParser& operator<<(const std::string& arg );
 
    std::vector<std::string>  m_vecArgs;   // all args written on command line

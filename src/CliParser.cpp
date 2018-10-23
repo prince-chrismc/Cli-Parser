@@ -28,15 +28,15 @@ SOFTWARE.
 #include <algorithm>
 //#include <execution>
 
-CommandLineParser::CommandLineParser( int argc, char** argv )
+template <typename ... Args>
+CommandLineParser::CommandLineParser( Args&&... args )
 {
-   Parse( argc, argv );
+   static_assert( ( std::is_constructible_v<std::string, Args&> && ... ) );
+   ( operator<<( args ), ... );
 }
 
-void CommandLineParser::Parse( int argc, char** argv )
+CommandLineParser::CommandLineParser( int argc, char** argv ) : m_vecArgs( &argv[ 1 ], argv + argc ), m_sCommand( argv[ 0 ] )
 {
-   m_sCommand = argv[ 0 ]; // Save filename
-   m_vecArgs.assign( &argv[1], argv + argc);
 }
 
 CommandLineParser& CommandLineParser::operator<<(const std::string& arg)
