@@ -36,10 +36,7 @@ CommandLineParser::CommandLineParser( int argc, char** argv )
 void CommandLineParser::Parse( int argc, char** argv )
 {
    m_sCommand = argv[ 0 ]; // Save filename
-   for( int i = 1; i < argc; i++ ) // Then save each arg
-   {
-      operator<<( argv[ i ] );
-   }
+   m_vecArgs.assign( &argv[1], argv + argc);
 }
 
 CommandLineParser& CommandLineParser::operator<<(const std::string& arg)
