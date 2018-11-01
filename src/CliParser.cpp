@@ -27,20 +27,25 @@ SOFTWARE.
 #include "CliParser.h"
 #include <algorithm>
 #include <type_traits>
-//#include <execution>
 
+#ifdef __cpp_lib_execution
+#include <execution>
+#endif
+
+#ifdef __cpp_fold_expressions
 template <typename ... Args>
 CommandLineParser::CommandLineParser( Args&&... args )
 {
    static_assert( ( std::is_constructible_v<std::string, Args&> && ... ) );
    ( operator<<( args ), ... );
 }
+#endif
 
 CommandLineParser::CommandLineParser( int argc, char** argv ) : m_vecArgs( &argv[ 1 ], argv + argc ), m_sCommand( argv[ 0 ] )
 {
 }
 
-CommandLineParser& CommandLineParser::operator<<(const std::string& arg)
+CommandLineParser& CommandLineParser::operator<<( const std::string& arg )
 {
    m_vecArgs.push_back( arg );
    return *this;
@@ -50,10 +55,14 @@ bool CommandLineParser::DoesSwitchExists( const std::string& name ) const noexce
 {
    if( name.empty() ) return false;
 
-   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
-                        {
-                           return ( arg.front() == '/' || arg.front() == '-' ) && ( arg.find( name ) != std::string::npos );
-                        } ) != std::end( m_vecArgs );
+   return std::find_if(
+#ifdef __cpp_lib_execution
+      std::execution::par_unseq,
+#endif
+      m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
+      {
+         return ( arg.front() == '/' || arg.front() == '-' ) && ( arg.find( name ) != std::string::npos );
+      } ) != std::end( m_vecArgs );
 }
 
 std::string CommandLineParser::GetPairValue( std::string name ) const noexcept
@@ -93,8 +102,12 @@ std::string CommandLineParser::GetNonInterpted( size_t index ) const noexcept
 
 CommandLineParser::ArgIterator CommandLineParser::find( const std::string& name ) const noexcept
 {
-   return std::find_if( /*std::execution::par_unseq,*/ m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
-                        {
-                           return arg.compare( 0, name.length(), name ) == 0;
-                        } );
+   return std::find_if(
+#ifdef __cpp_lib_execution
+      std::execution::par_unseq,
+#endif
+      m_vecArgs.cbegin(), m_vecArgs.cend(), [ name ]( const std::string& arg )->bool
+      {
+         return arg.compare( 0, name.length(), name ) == 0;
+      } );
 }

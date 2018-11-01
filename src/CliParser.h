@@ -44,8 +44,11 @@ SOFTWARE.
 class CommandLineParser
 {
 public:
+#ifdef __cpp_fold_expressions
    template<typename ...Args>
    CommandLineParser( Args&&... args );
+#endif
+
    CommandLineParser( int argc, char** argv );
 
    bool        DoesSwitchExists( const std::string& name ) const noexcept;
