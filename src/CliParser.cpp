@@ -36,7 +36,9 @@ SOFTWARE.
 template <typename ... Args>
 CommandLineParser::CommandLineParser( Args&&... args )
 {
+#ifdef __cpp_lib_logical_traits
    static_assert( ( std::is_constructible_v<std::string, Args&> && ... ) );
+#endif
    ( operator<<( args ), ... );
 }
 #endif
