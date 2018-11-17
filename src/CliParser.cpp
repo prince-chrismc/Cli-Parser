@@ -67,7 +67,7 @@ bool CommandLineParser::DoesSwitchExists( const std::string& name ) const noexce
       } ) != std::end( m_vecArgs );
 }
 
-std::string CommandLineParser::GetPairValue( std::string name ) const noexcept
+std::string CommandLineParser::GetPairValue( std::string name ) const
 {
    if( name.empty() ) return "";
 
@@ -86,7 +86,7 @@ std::string CommandLineParser::GetPairValue( std::string name ) const noexcept
    return retval;
 }
 
-std::string CommandLineParser::GetNonInterpted( size_t index ) const noexcept
+std::string CommandLineParser::GetNonInterpted( size_t index ) const
 {
    if( m_vecArgs.size() > index ) return "";
 

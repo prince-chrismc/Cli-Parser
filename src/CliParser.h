@@ -52,8 +52,8 @@ public:
    CommandLineParser( int argc, char** argv );
 
    bool        DoesSwitchExists( const std::string& name ) const noexcept;
-   std::string GetPairValue( std::string name ) const noexcept;
-   std::string GetNonInterpted( size_t index ) const noexcept; // Ignores switches and pairs
+   std::string GetPairValue( std::string name ) const;
+   std::string GetNonInterpted( size_t index ) const; // Ignores switches and pairs
 
    using ArgIterator = std::vector<std::string>::const_iterator;
    ArgIterator cbegin() const noexcept { return m_vecArgs.cbegin(); }
