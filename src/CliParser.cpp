@@ -32,6 +32,21 @@ SOFTWARE.
 #include <execution>
 #endif
 
+#include <cctype>
+
+std::string toLower( const std::string& str )
+{
+   std::string lowerCase;
+
+   std::transform(
+      str.begin(), str.end(),
+      std::back_inserter( lowerCase ),
+      []( const char c ) -> const char { return static_cast<char>( std::tolower( c ) ); }
+   );
+
+   return lowerCase;
+}
+
 #ifdef __cpp_fold_expressions
 template <typename ... Args>
 CommandLineParser::CommandLineParser( Args&&... args )
@@ -112,4 +127,15 @@ CommandLineParser::ArgIterator CommandLineParser::find( const std::string& name 
       {
          return arg.compare( 0, name.length(), name ) == 0;
       } );
+}
+
+size_t CommandLineParser::doesMatch( const ArgIterator & arg_itor, std::initializer_list<std::string> list )
+{
+   for( size_t i = 0; i < list.size(); ++i )
+   {
+      if( toLower( *( list.begin() + i ) ) == toLower( *arg_itor ) )
+         return i;
+   }
+
+   return -1; // Not Found
 }

@@ -60,6 +60,8 @@ public:
    ArgIterator cend() const noexcept { return m_vecArgs.cend(); }
    ArgIterator find( const std::string& name ) const noexcept;
 
+   static size_t doesMatch( const ArgIterator& arg_itor, std::initializer_list<std::string> list ); // Returns index to list elem or -1 for not found
+
 private:
    CommandLineParser& operator<<(const std::string& arg );
 
