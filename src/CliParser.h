@@ -60,10 +60,22 @@ public:
    ArgIterator cend() const noexcept { return m_vecArgs.cend(); }
    ArgIterator find( const std::string& name ) const noexcept;
 
-   static size_t doesMatch( const ArgIterator& arg_itor, std::initializer_list<std::string> list ); // Returns index to list elem or -1 for not found
+   // Returns index to list elem or -1 for not found
+   template<typename Enum>
+   static auto doesMatch( const ArgIterator& arg_itor, std::initializer_list<std::string> list )-> Enum
+   {
+      for( size_t i = 0; i < list.size(); ++i )
+      {
+         if( toLower( *( list.begin() + i ) ) == toLower( *arg_itor ) )
+            return Enum( i );
+      }
+
+      return Enum( -1 ); // Not Found
+   }
 
 private:
    CommandLineParser& operator<<(const std::string& arg );
+   static std::string toLower( const std::string& str );
 
    std::vector<std::string>  m_vecArgs;   // all args written on command line
    std::string               m_sCommand;  // the name of the program invoked

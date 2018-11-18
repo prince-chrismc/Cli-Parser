@@ -27,25 +27,11 @@ SOFTWARE.
 #include "CliParser.h"
 #include <algorithm>
 #include <type_traits>
+#include <cctype>
 
 #ifdef __cpp_lib_execution
 #include <execution>
 #endif
-
-#include <cctype>
-
-std::string toLower( const std::string& str )
-{
-   std::string lowerCase;
-
-   std::transform(
-      str.begin(), str.end(),
-      std::back_inserter( lowerCase ),
-      []( const char c ) -> const char { return static_cast<char>( std::tolower( c ) ); }
-   );
-
-   return lowerCase;
-}
 
 #ifdef __cpp_fold_expressions
 template <typename ... Args>
@@ -129,13 +115,15 @@ CommandLineParser::ArgIterator CommandLineParser::find( const std::string& name 
       } );
 }
 
-size_t CommandLineParser::doesMatch( const ArgIterator & arg_itor, std::initializer_list<std::string> list )
+std::string CommandLineParser::toLower( const std::string& str )
 {
-   for( size_t i = 0; i < list.size(); ++i )
-   {
-      if( toLower( *( list.begin() + i ) ) == toLower( *arg_itor ) )
-         return i;
-   }
+   std::string lowerCase;
 
-   return -1; // Not Found
+   std::transform(
+      str.begin(), str.end(),
+      std::back_inserter( lowerCase ),
+      []( const char c ) -> const char { return static_cast<char>( std::tolower( c ) ); }
+   );
+
+   return lowerCase;
 }
